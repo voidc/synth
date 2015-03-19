@@ -8,8 +8,16 @@ import io.github.voidc.synth.synthesize.Instrument;
 import io.github.voidc.synth.synthesize.Player;
 
 public class Test {
-    private int[] tetrisMelody = {10, 5, 6, 8, 6, 5, 3, 3, 6, 10, 8, 6, 5, 5, 6, 8, 10, 6, 3, 3};
-    private double[] tetrisMeasure = {0.5, 0.25, 0.25, 0.5, 0.25, 0.25, 0.5, 0.25, 0.25, 0.5, 0.25, 0.25, 0.5, 0.25, 0.25, 0.5, 0.5, 0.5, 0.5, 0.5};
+    private final int PAUSE = 1000;
+    private int[] tetrisMelody = {
+            10, 5, 6, 8, 6, 5, 3, 3, 6, 10, 8, 6, 5, 5, 6, 8, 10, 6, 3, 3, PAUSE,
+            PAUSE, 8, 8, 11, 15, 14, 11, 10, 10, 6, 10, 8, 6, 5, 5, 6, 8, 10, 6, 3, 3, PAUSE
+    };
+    private double[] tetrisMeasure = {
+            4, 8, 8, 4, 8, 8, 4, 8, 8, 4, 8, 8, 4, 8, 8, 4, 4, 4, 4, 4, 4,
+            8, 8, 8, 8, 4, 8, 8, 4, 8, 8, 4, 8, 8, 4, 8, 8, 4, 4, 4, 4, 4, 4
+    };
+
     public static void main(String[] args) {
         new Test().testSequencer();
     }
@@ -20,13 +28,15 @@ public class Test {
         ins.setAmplitudeMod(sinOsc, 4);
         ins.setFrequencyMod(sinOsc, 12);
 
-        //int[] scale = genScale(parseNote("gis3"), MELODIC_MINOR_SCALE);
         SequenceBuilder seqB = new SequenceBuilder();
         seqB.setBpm(120);
         for(int i = 0; i < tetrisMelody.length; i++) {
-            seqB.appendNote(tetrisMelody[i], tetrisMeasure[i]);
+            if(tetrisMelody[i] == PAUSE) {
+                seqB.appendPause(1 / tetrisMeasure[i]);
+            } else {
+                seqB.appendNote(tetrisMelody[i], 1 / tetrisMeasure[i]);
+            }
         }
-        seqB.appendPause(0.5);
 
         Sequencer seq = new Sequencer(ins);
         seqB.apply(seq);

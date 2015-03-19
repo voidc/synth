@@ -30,7 +30,7 @@ public class Sequencer implements ISampleProvider {
         for(int n = 0; n < notes.size(); n++) {
             TimedNote note = notes.get(n);
             if(note.active) {
-                if(time > note.time + note.value + env.releaseDuration * note.value) {
+                if(time > note.time + note.value + env.releaseDuration * note.value || time < note.time) {
                     note.setActive(false);
                 } else {
                     active.add(note);

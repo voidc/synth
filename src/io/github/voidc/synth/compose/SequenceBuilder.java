@@ -31,7 +31,7 @@ public class SequenceBuilder {
     }
 
     public double noteValueToDuration(double noteValue) {
-        return 2 * (60 / bpm) * noteValue;
+        return 4 * (60 / bpm) * noteValue;
     }
 
 
